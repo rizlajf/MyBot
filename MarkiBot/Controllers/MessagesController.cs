@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System.Configuration;
 
 namespace MarkiBot
 {
@@ -15,7 +16,8 @@ namespace MarkiBot
         /// Receive a message from a user and reply to it
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
-        {
+        {            
+
             if (activity.Type == ActivityTypes.Message)
             {
                 //Implementation of typing indication
@@ -43,6 +45,13 @@ namespace MarkiBot
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
+                // Construct a base URL for Image
+                // To allow it to be found wherever the application is deployed
+                //string strCurrentURL = this.Url.Request.RequestUri.AbsoluteUri.Replace(@"api/messages", "");
+                //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None); // Add an Application Setting.
+                //config.AppSettings.Settings.Add("strCurrentURL", strCurrentURL);
+                //// Save the changes in App.config file.
+                //config.Save(ConfigurationSaveMode.Modified);
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels

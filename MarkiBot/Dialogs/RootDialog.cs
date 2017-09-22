@@ -49,6 +49,14 @@ namespace MarkiBot.Dialogs
                 {
                     await context.PostAsync("Yes. what do you want me to do for you?");
                 }
+                else if (activity.Text.ToLower().Contains("amplifiers"))
+                {
+                    await RedirectToproductContentGenerator(context, "Amplifiers");                    
+                }
+                else if (activity.Text.ToLower().Contains("balun"))
+                {
+                    await RedirectToproductContentGenerator(context, "Balun");
+                }
                 else
                 {
                     await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
@@ -92,6 +100,42 @@ namespace MarkiBot.Dialogs
 
         private async Task ResumeAfterProductDialog(IDialogContext context, IAwaitable<int> result)
         {
+            context.Wait(this.MessageReceivedAsync);
+        }
+
+        private async Task RedirectToproductContentGenerator(IDialogContext context, string product)
+        {
+            string category = product;
+            var resultMessage = context.MakeMessage();
+            resultMessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            resultMessage.Attachments = new List<Attachment>();
+
+            List<HeroCard> herocardList = null;
+            ProductContentClass pc = new ProductContentClass();
+
+            switch (product.ToString())
+            {
+                case "Amplifiers":
+                    herocardList = pc.GenerateAmplifiersContent();
+                    break;
+                case "Balun":
+                    herocardList = pc.GenerateBalunContent();
+                    break;
+                case "Bias Tees":
+
+                    break;
+                case "Couplers":
+
+                    break;
+                case "Equalizers":
+
+                    break;
+            }
+            foreach (HeroCard hc in herocardList)
+            {
+                resultMessage.Attachments.Add(hc.ToAttachment());
+            }
+            await context.PostAsync(resultMessage);
             context.Wait(this.MessageReceivedAsync);
         }
 

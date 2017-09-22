@@ -105,6 +105,12 @@
   <ItemGroup>
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
+    <Content Include="Images\amplifiers-legacy-hero-image.png" />
+    <Content Include="Images\amp_lo_driver_module_adm1-0026pa.png" />
+    <Content Include="Images\amp_lo_driver_surface_mounts_adm-0026-5929sm_crop.png" />
+    <Content Include="Images\Baluns\preview-full-Baluns-Inverters-Hero-Image-INV-0040.png" />
+    <Content Include="Images\Baluns\preview-full-Baluns-Surface-Mounts-Hero-Image-BAL-0006SMG.png" />
+    <Content Include="Images\Baluns\preview-full-Baluns-Test-Measurement-Hero-Image-BAL-0067-300x169.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -122,6 +128,7 @@
     </Compile>
     <Compile Include="Hotel.cs" />
     <Compile Include="HotelsQuery.cs" />
+    <Compile Include="ProductContentClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +141,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\Bias_Tees\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
