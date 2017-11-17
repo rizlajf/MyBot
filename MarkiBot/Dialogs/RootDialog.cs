@@ -98,12 +98,12 @@ namespace MarkiBot.Dialogs
             }
         }
 
-        private async Task ResumeAfterProductDialog(IDialogContext context, IAwaitable<int> result)
+        public async Task ResumeAfterProductDialog(IDialogContext context, IAwaitable<int> result)
         {
             context.Wait(this.MessageReceivedAsync);
         }
 
-        private async Task RedirectToproductContentGenerator(IDialogContext context, string product)
+        public async Task RedirectToproductContentGenerator(IDialogContext context, string product)
         {
             string category = product;
             var resultMessage = context.MakeMessage();
@@ -113,22 +113,25 @@ namespace MarkiBot.Dialogs
             List<HeroCard> herocardList = null;
             ProductContentClass pc = new ProductContentClass();
 
-            switch (product.ToString())
+            switch (product.ToLower().ToString())
             {
-                case "Amplifiers":
+                case "amplifier":
                     herocardList = pc.GenerateAmplifiersContent();
                     break;
-                case "Balun":
+                case "balun":
                     herocardList = pc.GenerateBalunContent();
                     break;
-                case "Bias Tees":
+                case "bias tees":
 
                     break;
-                case "Couplers":
+                case "coupler":
 
                     break;
-                case "Equalizers":
+                case "equalizer":
 
+                    break;
+                default:
+                    herocardList = null;
                     break;
             }
             foreach (HeroCard hc in herocardList)
