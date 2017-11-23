@@ -219,6 +219,8 @@
                 if (selectedOption.ToString() == "Yes")
                 {
                     await context.PostAsync("What can I do for you?");
+                    // Again, wait for the next message from the user.
+                    context.Done(true);
                 }
                 else
                 {

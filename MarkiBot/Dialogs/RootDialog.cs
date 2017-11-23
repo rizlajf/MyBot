@@ -24,53 +24,55 @@ namespace MarkiBot.Dialogs
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
-            var activity = await result as Activity;
+            await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
+            PromptDialog.Choice(context, this.NextQuestionAsync, new List<string>() { "Yes", "No" }, "Please let me know if you want me to help you out to search any product.");
+            //var activity = await result as Activity;
 
-            if (activity.Text.ToLower().Contains("hi") || activity.Text.ToLower().Contains("hello"))
-            {
-                await context.PostAsync("Hello how can I help you?");
-            }
-            else
-            {
-                //if (activity.Text.ToLower().Contains("help") || activity.Text.ToLower().Contains("support") || activity.Text.ToLower().Contains("problem"))
-                //{
-                //    await context.Forward(new SupportDialog(), this.ResumeAfterSupportDialog, activity, CancellationToken.None);
-                //}
-                if (activity.Text.ToLower().Contains("show") || activity.Text.ToLower().Contains("product") || activity.Text.ToLower().Contains("find"))
-                {
-                    await context.PostAsync("Sure.");
-                    await context.Forward(new ProductDialog(), this.ResumeAfterProductDialog, activity, CancellationToken.None);
-                }
-                else if (activity.Text.ToLower().Contains("Thank"))
-                {
-                    await context.PostAsync("You are wellcome.");
-                }
-                else if (activity.Text.ToLower().Contains("hey"))
-                {
-                    await context.PostAsync("Yes. what do you want me to do for you?");
-                }
-                else if (activity.Text.ToLower().Contains("amplifiers"))
-                {
-                    await RedirectToproductContentGenerator(context, "Amplifiers");                    
-                }
-                else if (activity.Text.ToLower().Contains("balun"))
-                {
-                    await RedirectToproductContentGenerator(context, "Balun");
-                }
-                else
-                {
-                    await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
-                    PromptDialog.Choice(context, this.NextQuestionAsync, new List<string>() { "Yes", "No" }, "Please let me know if you want me to help you out to search any product.");
-                    //List<string> questions = new List<string>();
-                    //questions.Add("Yes"); // Added yes option to prompt
-                    //questions.Add("No"); // Added no option to prompt
-                    //string QuestionPrompt = "Please let me know if you want me to help you out to search any product.";
-                    //PromptOptions<string> options = new PromptOptions<string>(QuestionPrompt, "", "", questions, 1); // Overrided the PromptOptions Constructor.
-                    //PromptDialog.Choice<string>(context, NextQuestionAsync, options);
-                    //this.ShowOptions(context);
-                }
+            //if (activity.Text.ToLower().Contains("hi") || activity.Text.ToLower().Contains("hello"))
+            //{
+            //    await context.PostAsync("Hello how can I help you?");
+            //}
+            //else
+            //{
+            //    //if (activity.Text.ToLower().Contains("help") || activity.Text.ToLower().Contains("support") || activity.Text.ToLower().Contains("problem"))
+            //    //{
+            //    //    await context.Forward(new SupportDialog(), this.ResumeAfterSupportDialog, activity, CancellationToken.None);
+            //    //}
+            //    if (activity.Text.ToLower().Contains("show") || activity.Text.ToLower().Contains("product") || activity.Text.ToLower().Contains("find"))
+            //    {
+            //        await context.PostAsync("Sure.");
+            //        await context.Forward(new ProductDialog(), this.ResumeAfterProductDialog, activity, CancellationToken.None);
+            //    }
+            //    else if (activity.Text.ToLower().Contains("Thank"))
+            //    {
+            //        await context.PostAsync("You are wellcome.");
+            //    }
+            //    else if (activity.Text.ToLower().Contains("hey"))
+            //    {
+            //        await context.PostAsync("Yes. what do you want me to do for you?");
+            //    }
+            //    else if (activity.Text.ToLower().Contains("amplifiers"))
+            //    {
+            //        await RedirectToproductContentGenerator(context, "Amplifiers");                    
+            //    }
+            //    else if (activity.Text.ToLower().Contains("balun"))
+            //    {
+            //        await RedirectToproductContentGenerator(context, "Balun");
+            //    }
+            //    else
+            //    {
+            //        await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
+            //        PromptDialog.Choice(context, this.NextQuestionAsync, new List<string>() { "Yes", "No" }, "Please let me know if you want me to help you out to search any product.");
+            //        //List<string> questions = new List<string>();
+            //        //questions.Add("Yes"); // Added yes option to prompt
+            //        //questions.Add("No"); // Added no option to prompt
+            //        //string QuestionPrompt = "Please let me know if you want me to help you out to search any product.";
+            //        //PromptOptions<string> options = new PromptOptions<string>(QuestionPrompt, "", "", questions, 1); // Overrided the PromptOptions Constructor.
+            //        //PromptDialog.Choice<string>(context, NextQuestionAsync, options);
+            //        //this.ShowOptions(context);
+            //    }
 
-            }
+            //}
             //context.Wait(MessageReceivedAsync);
         }
 
@@ -89,7 +91,8 @@ namespace MarkiBot.Dialogs
                 {
                     await context.PostAsync("You Said No");
                     await context.PostAsync("Thank you. Please feel free to seek any help from me if you need. Have a nice day!!");
-                    context.Done<string>(null);
+                    //context.Done<string>(null);
+                    context.Done(true);
                 }
             }
             catch (Exception e)
@@ -134,10 +137,16 @@ namespace MarkiBot.Dialogs
                     herocardList = null;
                     break;
             }
-            foreach (HeroCard hc in herocardList)
+            if (herocardList != null)
             {
-                resultMessage.Attachments.Add(hc.ToAttachment());
+                foreach (HeroCard hc in herocardList)
+                {
+                    resultMessage.Attachments.Add(hc.ToAttachment());
+                }
             }
+            else
+                return;
+            
             await context.PostAsync(resultMessage);
             context.Wait(this.MessageReceivedAsync);
         }

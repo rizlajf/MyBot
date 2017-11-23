@@ -28,11 +28,18 @@ namespace MarkiBot.Dialogs
         [LuisIntent("None")]
         public async Task None(IDialogContext context, LuisResult luisResult)
         {
-            await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
-            var dialog = new RootDialog();
-            PromptDialog.Choice(context, dialog.NextQuestionAsync, new List<string>() { "Yes", "No" }, "Please let me know if you want me to help you out to search any product.");
-            context.Wait(this.MessageReceived);
+            //await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
+            await context.Forward(new RootDialog(), ResumeAfter, new Activity { Text = luisResult.Query }, CancellationToken.None);
+            //RootDialog dialog = new RootDialog();
+            //PromptDialog.Choice(context, dialog.NextQuestionAsync, new List<string>() { "Yes", "No" }, "Please let me know if you want me to help you out to search any product.");
+            //context.Wait(this.MessageReceived);
         }
+
+        private async Task ResumeAfter(IDialogContext context, IAwaitable<object> result)
+        {
+            context.Wait(MessageReceived);
+        }
+
         [LuisIntent("Greet.Welcome")]
         public async Task GreetWelcome(IDialogContext context, LuisResult luisResult)
         {
@@ -65,13 +72,53 @@ namespace MarkiBot.Dialogs
         }
         [LuisIntent("Search")]
         public async Task SearchProduct(IDialogContext context, LuisResult luisResult)
-        {
-            await context.PostAsync("Sure.");
-            var dialog = new RootDialog();
+        {            
+            //var dialog = new RootDialog();
             //await context.Forward(new ProductDialog(), dialog.ResumeAfterProductDialog, null, CancellationToken.None);
             foreach (EntityRecommendation curEntity in luisResult.Entities)
             {
-                await dialog.RedirectToproductContentGenerator(context, curEntity.Entity);
+                //await dialog.RedirectToproductContentGenerator(context, curEntity.Entity);
+                
+                var resultMessage = context.MakeMessage();
+                resultMessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+                resultMessage.Attachments = new List<Attachment>();
+
+                List<HeroCard> herocardList = null;
+                ProductContentClass pc = new ProductContentClass();
+
+                switch (curEntity.Entity.ToLower().ToString())
+                {
+                    case "amplifier":
+                        herocardList = pc.GenerateAmplifiersContent();
+                        break;
+                    case "balun":
+                        herocardList = pc.GenerateBalunContent();
+                        break;
+                    case "bias tees":
+
+                        break;
+                    case "coupler":
+
+                        break;
+                    case "equalizer":
+
+                        break;
+                    default:
+                        herocardList = null;
+                        break;
+                }
+                if (herocardList != null)
+                {
+                    await context.PostAsync("Collecting informstions on " + curEntity.Entity);
+                    foreach (HeroCard hc in herocardList)
+                    {
+                        resultMessage.Attachments.Add(hc.ToAttachment());
+                    }
+                    await context.PostAsync(resultMessage);
+                    context.Wait(this.MessageReceived);
+                }
+                else
+                    continue;
             }
         }
     }
