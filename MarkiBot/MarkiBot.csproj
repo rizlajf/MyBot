@@ -115,6 +115,16 @@
     <Content Include="Images\Baluns\preview-full-Baluns-Inverters-Hero-Image-INV-0040.png" />
     <Content Include="Images\Baluns\preview-full-Baluns-Surface-Mounts-Hero-Image-BAL-0006SMG.png" />
     <Content Include="Images\Baluns\preview-full-Baluns-Test-Measurement-Hero-Image-BAL-0067-300x169.png" />
+    <Content Include="Images\Equalizers\bare-die_modules-hero-image-meq3-30ach.png" />
+    <Content Include="Images\Equalizers\bare-die_modules-hero-image.png" />
+    <Content Include="Images\Bias_Tees\modules-hero-image.png" />
+    <Content Include="Images\Bias_Tees\preview-full-Bias-Tees-High-Power-Hero-Image-BTN2-0050.png" />
+    <Content Include="Images\Bias_Tees\preview-full-Bias-Tees-Surface-Mounts-Hero-Image-BT-0034SMG-300x207.png" />
+    <Content Include="Images\Couplers\pick-off-tees-hero-image.png" />
+    <Content Include="Images\Couplers\preview-upload_card-Couplers-Dual-Directional-Hero-Image-CD10-0114.png" />
+    <Content Include="Images\Couplers\preview-upload_card-Couplers-High-Directivity-Bridge-Hero-Image-CBR16-0012.png" />
+    <Content Include="Images\Couplers\preview-upload_card-Couplers-Low-Loss-High-Power-Hero-Image-C17-0R518.png" />
+    <Content Include="Images\Couplers\preview-upload_card-Couplers-Stripline-Directional-Hero-Image-C13-0150.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -155,9 +165,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\Bias_Tees\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -29,7 +29,8 @@ namespace MarkiBot.Dialogs
         public async Task None(IDialogContext context, LuisResult luisResult)
         {
             //await context.PostAsync("Sorry I could not understand your request, By the way I can help you out to search any products from Marki Microwave");
-            await context.Forward(new RootDialog(), ResumeAfter, new Activity { Text = luisResult.Query }, CancellationToken.None);
+            //await context.Forward(new RootDialog(), ResumeAfter, new Activity { Text = luisResult.Query }, CancellationToken.None);
+            await context.Forward(new SupportDialog(), ResumeAfter, new Activity { Text = luisResult.Query }, CancellationToken.None);
             //RootDialog dialog = new RootDialog();
             //PromptDialog.Choice(context, dialog.NextQuestionAsync, new List<string>() { "Yes", "No" }, "Please let me know if you want me to help you out to search any product.");
             //context.Wait(this.MessageReceived);
@@ -89,19 +90,24 @@ namespace MarkiBot.Dialogs
                 switch (curEntity.Entity.ToLower().ToString())
                 {
                     case "amplifier":
+                    case "amplifiers":
                         herocardList = pc.GenerateAmplifiersContent();
                         break;
                     case "balun":
+                    case "baluns":
                         herocardList = pc.GenerateBalunContent();
                         break;
                     case "bias tees":
-
+                    case "bias":
+                        herocardList = pc.GenerateBiasTeesContent();
                         break;
                     case "coupler":
-
+                    case "couplers":
+                        herocardList = pc.GenerateCouplersContent();
                         break;
                     case "equalizer":
-
+                    case "equalizers":
+                        herocardList = pc.GenerateEqualizersContent();
                         break;
                     default:
                         herocardList = null;

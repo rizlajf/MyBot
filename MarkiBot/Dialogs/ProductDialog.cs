@@ -183,19 +183,26 @@
                         herocardList = pc.GenerateBalunContent();
                         break;
                     case "Bias Tees":
-                        
+                        herocardList = pc.GenerateBiasTeesContent();
                         break;
                     case "Couplers":
-                        
+                        herocardList = pc.GenerateCouplersContent();
                         break;
                     case "Equalizers":
-                       
+                        herocardList = pc.GenerateEqualizersContent();
+                        break;
+                    default:
+                        herocardList = null;
                         break;
                 }
-                foreach (HeroCard hc in herocardList)
+                if (herocardList != null)
                 {
-                    resultMessage.Attachments.Add(hc.ToAttachment());
-                }
+                    await context.PostAsync("Collecting informstions on " + optionSelected);
+                    foreach (HeroCard hc in herocardList)
+                    {
+                        resultMessage.Attachments.Add(hc.ToAttachment());
+                    }
+                }                    
                 await context.PostAsync(resultMessage);
             }
             catch (TooManyAttemptsException ex)
@@ -225,18 +232,13 @@
                 else
                 {
                     await context.PostAsync("Thank you. Please feel free to seek any help from me if you need. Have a nice day!!");
+                    context.Done(true);
                 }
             }
             catch (Exception e)
             {
 
-            }
-            finally
-            {
-                context.Done<string>(null);
-            }
+            }           
         }
-
-
     }
 }
